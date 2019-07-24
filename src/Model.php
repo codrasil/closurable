@@ -1,17 +1,17 @@
 <?php
 
-namespace Codrasil\Nestable;
+namespace Codrasil\Closurable;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
 abstract class Model extends BaseModel
 {
-    use Nestable;
+    use Closurable;
 
     /**
-     * The table adjacently associated with the model.
+     * The closure table associated with the model.
      *
      * @var string
      */
-    protected $adjacentTable;
+    protected $closureTable;
 }

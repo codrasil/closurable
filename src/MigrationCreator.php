@@ -1,6 +1,6 @@
 <?php
 
-namespace Codrasil\Nestable;
+namespace Codrasil\Closurable;
 
 use Illuminate\Database\Migrations\MigrationCreator as BaseMigrationCreator;
 

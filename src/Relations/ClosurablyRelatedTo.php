@@ -373,12 +373,14 @@ class ClosurablyRelatedTo extends Relation
     /**
      * Attach the model to self as root.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @param  \Illuminate\Database\Eloquent\Model|null $model
      * @return self
      */
-    public function attachToSelf(Model $model)
+    public function attachToSelf(Model $model = null)
     {
-        if ($model->children->isEmpty() && is_null($model->parent)) {
+        $model = $model ?? $this->model;
+
+        if ($model->children->isEmpty() && is_null($model->parent) && ! $model->isRoot()) {
             $ancestorId = $model->getKey();
             $descendantId = $model->getKey();
             $query = $this->buildInsertFromSelectNodeQuery($ancestorId, $descendantId, $isRoot = 1);
@@ -481,7 +483,7 @@ class ClosurablyRelatedTo extends Relation
             DELETE FROM {$table}
             WHERE {$descendantKey} IN (
                 SELECT {$descendantKey}
-                FROM {$table}
+                FROM (SELECT * FROM {$table}) as m
                 WHERE {$ancestorKey} = {$key}
             )
         ";

@@ -65,6 +65,16 @@ trait Closurable
     }
 
     /**
+     * Check if resource has children.
+     *
+     * @return boolean
+     */
+    public function hasChildren()
+    {
+        return $this->children()->isNotEmpty();
+    }
+
+    /**
      * Retrieve the descendants attribute.
      *
      * @return \Illuminate\Database\Eloquent\Collection
@@ -82,6 +92,16 @@ trait Closurable
     public function getDescendantsAttribute()
     {
         return $this->descendants();
+    }
+
+    /**
+     * Check if resource has descendants.
+     *
+     * @return boolean
+     */
+    public function hasDescendants()
+    {
+        return $this->descendants()->isNotEmpty();
     }
 
     /**
@@ -105,6 +125,16 @@ trait Closurable
     }
 
     /**
+     * Check if resource has ancestors.
+     *
+     * @return boolean
+     */
+    public function hasAncestors()
+    {
+        return $this->ancestors()->isNotEmpty();
+    }
+
+    /**
      * Retrieve the parent attribute.
      *
      * @return \Illuminate\Database\Eloquent\Model
@@ -122,6 +152,16 @@ trait Closurable
     public function getParentAttribute()
     {
         return $this->parent();
+    }
+
+    /**
+     * Check if resource has parent.
+     *
+     * @return boolean
+     */
+    public function hasParent()
+    {
+        return ! is_null($this->parent());
     }
 
     /**
@@ -317,37 +357,6 @@ trait Closurable
     }
 
     /**
-     * Query only root resources.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $builder
-     * @return void
-     */
-    public function scopeTree(Builder $builder)
-    {
-        $keyName = $this->getQualifiedKeyName();
-        $table = $this->getClosureTable();
-        $descendantKey = $table.'.'.$this->getDescendantKey();
-        $ancestorKey = $table.'.'.$this->getAncestorKey();
-        $depthKey = $table.'.'.$this->getDepthKey();
-
-        $builder
-            ->join(
-                $table,
-                function ($query) use ($keyName, $ancestorKey, $descendantKey, $depthKey, $table) {
-                    $query->on($keyName, '=', $ancestorKey)
-                        ->whereNotIn(
-                            $ancestorKey, function ($query) use ($descendantKey, $depthKey, $table) {
-                                $query
-                                    ->select($descendantKey)
-                                    ->from($table)
-                                    ->where($depthKey, '>', 0);
-                            }
-                        );
-                }
-            )->groupBy([$ancestorKey, $this->getKeyName(), $descendantKey, $depthKey]);
-    }
-
-    /**
      * Retrieve only root resource nodes.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $builder
@@ -367,5 +376,29 @@ trait Closurable
             ->where($depthKeyName, 0)
             ->where($rootKeyName, '=', 1)
             ->groupBy([$descendantKeyName, $modelKeyName, $ancestorKeyName, $depthKeyName]);
+    }
+
+    /**
+     * Check if model is exists on the closure table.
+     *
+     * @return boolean
+     */
+    public function isRoot()
+    {
+        return $this->roots()->where(
+            $this->getKeyName(), $this->getKey()
+        )->exists();
+    }
+
+    /**
+     * Attach the model to self.
+     *
+     * @return self
+     */
+    public function attachToSelf()
+    {
+        $this->closurables()->attachToSelf();
+
+        return $this;
     }
 }

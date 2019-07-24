@@ -14,7 +14,24 @@ class DummyClass extends Migration
     public function up()
     {
         Schema::table('DummyTable', function (Blueprint $table) {
-            //
+            $table->unsignedBigInteger('ancestor_id')->index();
+            $table->unsignedBigInteger('descendant_id')->index();
+            $table->unsignedBigInteger('depth')->index()->default(0);
+            $table->unsignedBigInteger('root')->index()->default(0);
+            $table->unique(['ancestor_id', 'descendant_id']);
+            $table->index(['ancestor_id', 'descendant_id', 'depth']);
+            $table->index(['descendant_id', 'depth']);
+            $table->index(['depth', 'root']);
+            $table->foreign('ancestor_id')
+                  ->references('id')
+                  ->on('DummyReferenceTable')
+                  ->onDelete('cascade')
+                  ->onUpdate('cascade');
+            $table->foreign('descendant_id')
+                  ->references('id')
+                  ->on('DummyReferenceTable')
+                  ->onDelete('cascade')
+                  ->onUpdate('cascade');
         });
     }
 
