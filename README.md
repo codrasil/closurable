@@ -26,7 +26,7 @@ composer require codrasil/closurable
 Pass in the artisan command the package's service provider:
 
 ```bash
-php artisan vendor:publish --provider="Codrasil\Nestable\NestableServiceProvider"
+php artisan vendor:publish --provider="Codrasil\Closurable\NestableServiceProvider"
 ```
 
 ---
