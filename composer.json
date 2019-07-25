@@ -1,6 +1,6 @@
 {
   "name": "codrasil/closurable",
-  "description": "Closure Table relational database implementation in PHP for any hierarchical data",
+  "description": "Closure Table relational database implementation in PHP Laravel for any hierarchic data",
   "type": "library",
   "license": "MIT",
   "authors": [
