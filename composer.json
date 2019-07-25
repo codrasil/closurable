@@ -1,6 +1,6 @@
 {
   "name": "codrasil/closurable",
-  "description": "Laravel database resource nesting",
+  "description": "Closure Table relational database implementation in PHP for any hierarchical data",
   "type": "library",
   "license": "MIT",
   "authors": [
