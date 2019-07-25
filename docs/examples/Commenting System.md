@@ -21,7 +21,7 @@ We need to generate two migration files: the `comments` table where we store all
 the `commentstree` table where we store the relationship of comments with each other.
 
 ```bash
-php artisan make:migration comments
+php artisan make:migration create_comments_table
 ```
 
 For the `comments` table, the simpliest required column fields may look something like the following:
@@ -45,11 +45,6 @@ Schema::create('comments', function (Blueprint $table) {
 });
 ```
 
-Then, generate a `Comment` model:
-```bash
-php artisan make:model Comment
-```
-
 Then, run the command to generate a closure table:
 ```bash
 php artisan make:closurable comments
@@ -57,13 +52,19 @@ php artisan make:closurable comments
 
 This will create a migration with the table name `commentstree`. Though there is no need to edit the migration file generated, you may do so if desired.
 
+#### **Model**
+Generate a `Comment` model:
+```bash
+php artisan make:model Comment
+```
+
 #### **Using the Trait or Abstract Class**
 
-Next, we will be using the trait `\Codrasil\Closurable\Closurable` on the `App\Comments` model.
+Next, we will be using the trait `\Codrasil\Closurable\Closurable` on the `App\Comment` model.
 ```php
 use Codrasil\Closurable\Closurable;
 
-class Comments extends Model
+class Comment extends Model
 {
     use Closurable;
 }
@@ -73,7 +74,7 @@ class Comments extends Model
 ```php
 use Codrasil\Closurable\Model as Closurable;
 
-class Comments extends Closurable
+class Comment extends Closurable
 {
 
 }
@@ -81,7 +82,7 @@ class Comments extends Closurable
 
 If you passed in a different table name for the closure table, you may override the value using the `$closureTable` property:
 ```php
-class Comments extends Model
+class Comment extends Model
 {
     use Closurable;
 
@@ -319,6 +320,78 @@ $comment->delete();
 ```
 
 Avoid making `orphans`. In code, and in life.
+
+---
+
+#### Displaying Root Comments
+
+Displaying comments for `App\Blog id 1` is fairly straightforward:
+```php
+$blog = Blog::find(1);
+$blog->comments;
+```
+
+But it would also display all replies of comments (and all replies of each comment's comments, and so on).
+
+To display only root comments for `App\Blog id 1`, use the `roots()` method:
+```php
+$blog = Blog::find(1);
+$blog->comments()->roots()->get();
+```
+
+**Alternatively** you may use the trait `Codrasil\Closurables\WithClosures` on the `Blog` Model:
+```php
+use Codrasil\Closurables\WithClosures;
+
+class Blog extends Model
+{
+    use WithClosures;
+}
+```
+
+Then call:
+```php
+$blog = Blog::find(1);
+$blog->root('comments')->get(); // similar to $blog->comments()->roots()->get();
+```
+
+In case you need to display all root comments regardless of commentable type, you may do so via:
+```php
+$comments = Comment::roots()->get();
+```
+
+---
+
+#### Displaying Replies
+
+To access replies, use the `children()` method. A better approach is to alias the `children` method with an accessor `getRepliesAttribute`:
+```php
+class Comment extends Model
+{
+    use Closurable;
+
+    /**
+     * Get the replies for this comment.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getRepliesAttribute()
+    {
+        return $this->children();
+    }
+}
+```
+
+```blade
+@foreach ($blog->root('comments')->get() as $comment)
+    {{ $comment->body }}
+    @if ($comment->hasReplies())
+        @include('path.to.recursive.replies', ['replies' => $comment->replies])
+    @endif
+@endforeach
+```
+
+**Note** you must write the method `hasReplies` as a wrapper for the `hasChildren` method.
 
 ---
 
