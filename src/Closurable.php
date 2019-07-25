@@ -8,13 +8,6 @@ use Illuminate\Support\Facades\DB;
 trait Closurable
 {
     /**
-     * The table closurably associated with the model.
-     *
-     * @var string
-     */
-    protected $closureTable;
-
-    /**
      * Retrieve the closure relation of the resource.
      * Uses the Closure Table Heirarchy Model.
      *
@@ -303,7 +296,7 @@ trait Closurable
      */
     public function getClosureTable()
     {
-        return $this->closureTable ?? $this->getTable().config('closurable.suffix');
+        return $this->closureTable ?: $this->getTable().config('closurable.suffix');
     }
 
     /**

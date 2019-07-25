@@ -66,10 +66,7 @@ class ClosurableMakeCommand extends Command
         $create = $this->input->getOption('create') ?: false;
 
         if ($table) {
-            $name = sprintf(
-                'create_%s_table',
-                Str::snake(trim($table))
-            );
+            $name = Str::snake(trim($table));
         }
 
         if ($create) {
