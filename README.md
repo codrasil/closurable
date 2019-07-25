@@ -305,7 +305,7 @@ For more use cases of `adjacent` and `lineal` relations, checkout <a href="./doc
 
 To learn more about the API, visit the <a href="./docs">docs</a> folder.
 
-For more example implementation, checkout <a href="./docs/examples">docs/examples</a> folder. The examples page has a variety of use cases like <a href="./docs/examples/Commenting System.md">Commenting System</a>, Taxonomic Ranking of the Animal Kingdom, Family Trees, and more.
+For more example implementation, checkout <a href="./docs/examples">docs/examples</a> folder. The examples page has a variety of use cases like <a href="./docs/examples/Commenting System.md">Commenting System</a>, <a href="./docs/examples/Taxonomic Ranking.md">Taxonomic Ranking of the Animal Kingdom</a>, <a href="./docs/examples/Family Trees.md">Family Trees</a>, and more.
 
 ### License
 The library is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
