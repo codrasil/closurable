@@ -28,7 +28,7 @@ class ClosurableMakeCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Generate a closure table migration file';
+    protected $description = 'Create a new closure migration file';
 
     /**
      * Create a new migration install command instance.
