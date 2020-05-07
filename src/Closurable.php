@@ -68,6 +68,69 @@ trait Closurable
     }
 
     /**
+     * Attach a child to the current resource.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model $child
+     * @return \Codrasil\Closurable\Relations\ClosurablyRelatedTo
+     */
+    public function addChild($child)
+    {
+        return $this->closurables()->attach($child);
+    }
+
+    /**
+     * Detach a child to the current resource.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model $child
+     * @return \Codrasil\Closurable\Relations\ClosurablyRelatedTo
+     */
+    public function removeChild($child)
+    {
+        return $this->closurables()->detach($child);
+    }
+
+    /**
+     * Attach children to the current resource.
+     *
+     * @param  array $children
+     * @return $this
+     */
+    public function addChildren(array $children)
+    {
+        foreach ((array) $children as $child) {
+            $this->closurables()->attach($child);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Detach children to the current resource.
+     *
+     * @param  array $children
+     * @return $this
+     */
+    public function removeChildren(array $children)
+    {
+        foreach ((array) $children as $child) {
+            $this->closurables()->detach($child);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Update the child's parent.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model $parent
+     * @return \Codrasil\Closurable\Relations\ClosurablyRelatedTo
+     */
+    public function updateParent($parent)
+    {
+        return $this->closurables()->move($parent);
+    }
+
+    /**
      * Retrieve the descendants attribute.
      *
      * @return \Illuminate\Database\Eloquent\Collection
