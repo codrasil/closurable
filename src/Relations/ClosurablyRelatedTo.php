@@ -413,10 +413,15 @@ class ClosurablyRelatedTo extends Relation
     /**
      * Detach models from the relationship.
      *
+     * @param  mixed $model
      * @return integer
      */
-    public function detach()
+    public function detach($model = null)
     {
+        if (! is_null($model)) {
+            return $this->deleteNodeAndAllDescendants($model->getKey());
+        }
+
         $key = $this->model->getKey();
 
         return $this->deleteNodeAndAllDescendants($key);
