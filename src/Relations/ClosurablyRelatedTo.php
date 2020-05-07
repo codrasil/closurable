@@ -145,14 +145,12 @@ class ClosurablyRelatedTo extends Relation
 
         $key = $this->model->getQualifiedKeyName();
 
-        $query
-            ->join(
-                $this->table, $key, '=', $this->getQualifiedDescendantKeyName()
-            )
-            ->where(
-                $this->getQualifiedAncestorKeyName(),
-                $this->model->{$this->model->getKeyName()}
-            );
+        $query->join(
+            $this->table, $key, '=', $this->getQualifiedDescendantKeyName()
+        )->where(
+            $this->getQualifiedAncestorKeyName(),
+            $this->model->{$this->model->getKeyName()}
+        );
 
         return $this;
     }
