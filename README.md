@@ -5,6 +5,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/codrasil/closurable/v/unstable)](https://packagist.org/packages/codrasil/closurable)
 [![License](https://poser.pugx.org/codrasil/closurable/license)](https://packagist.org/packages/codrasil/closurable)
 
+---
 
 <p align="center"><img style="display:block;margin:2rem auto;text-align:center" src="./docs/closurables.tree.svg" width="600"></center></p>
 Closure Table relational database implementation in PHP for any hierarchical data.
