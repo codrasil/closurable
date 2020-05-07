@@ -400,3 +400,5 @@ class Comment extends Model
 In this document, we have integrated a commenting system to our blog implementing the closure table model. We need to generate at least two migration files. We need to use a trait to the model being closure nested. We have stored a root comment; saved replies; deleted an entire thread of comments; and avoided making orphans.
 
 For further development, read more about the Nested Model approach, and how it is different from the Closure Table.
+
+Learn more of the applications of this package by visiting the <a href="../examples">docs</a> folder.

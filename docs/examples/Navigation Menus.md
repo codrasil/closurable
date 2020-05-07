@@ -194,3 +194,5 @@ $menu->closurables()->attach(Menu::create(['text' => 'Some Alien Crystal Skull',
 
 **Visual Representation**:
 <p align="center"><img style="display:block;margin:2rem auto;text-align:center" src="../closurables.menus.example1.svg"></p>
+
+Learn more of the applications of this package by visiting the <a href="../examples">docs</a> folder.

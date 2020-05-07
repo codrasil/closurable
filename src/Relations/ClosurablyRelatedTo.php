@@ -145,14 +145,12 @@ class ClosurablyRelatedTo extends Relation
 
         $key = $this->model->getQualifiedKeyName();
 
-        $query
-            ->join(
-                $this->table, $key, '=', $this->getQualifiedDescendantKeyName()
-            )
-            ->where(
-                $this->getQualifiedAncestorKeyName(),
-                $this->model->{$this->model->getKeyName()}
-            );
+        $query->join(
+            $this->table, $key, '=', $this->getQualifiedDescendantKeyName()
+        )->where(
+            $this->getQualifiedAncestorKeyName(),
+            $this->model->{$this->model->getKeyName()}
+        );
 
         return $this;
     }
@@ -394,16 +392,18 @@ class ClosurablyRelatedTo extends Relation
     /**
      * Move a node to a given immediate ancestor (parent).
      *
-     * @param  integer $parentId
+     * @param  \Illuminate\Database\Eloquent\Model $parent
      * @return self
      */
-    public function move($parentId)
+    public function move($parent)
     {
+        $parent->attachToSelf();
+
         $key = $this->model->getKey();
 
         $this->deleteNodeAndAllDescendants($key);
 
-        $query = $this->buildInsertFromSelectNodeQuery($parentId, $key);
+        $query = $this->buildInsertFromSelectNodeQuery($parent->getKey(), $key);
 
         DB::insert($query);
 
